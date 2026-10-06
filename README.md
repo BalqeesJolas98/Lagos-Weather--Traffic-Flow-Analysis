@@ -123,7 +123,3 @@ The paper's reported validation R² values are documented separately for compari
 The implementation uses an explicit 80/20 random holdout with `random_state=42` so that the validation implementation is deterministic. The paper does not state enough split/seed details to establish that this exact sampling procedure produced its reported R² values. Therefore, the paper R² values are retained only as reference values, and the generated comparison table reports any difference rather than forcing agreement.
 
 The existing road-season random holdout and chronological validation diagnostics remain in the repository as **supplementary diagnostics**. They do not replace or alter the paper-level validation reproduction and do not change the primary regression results.
-
-### Weather Condition
-
-Weather Condition is intentionally left unchanged. It remains in the standardized dataset and is treated exactly as already specified in the paper-aligned code. It is not inserted into the primary Tables 3-8 regression specification.
