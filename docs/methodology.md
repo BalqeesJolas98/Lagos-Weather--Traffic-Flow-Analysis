@@ -64,3 +64,29 @@ The executable pipeline also covers the non-ML descriptive analyses reported bef
 The paper's discussion of infrastructure durability/performance, flooding, heat effects and road capacity is not converted into a quantitative model because the supplied dataset does not contain a direct infrastructure-condition or capacity outcome. Doing so would introduce variables and methodology that are not supported by the study data.
 
 The primary season-road OLS model remains unchanged: temperature, dew point and precipitation are the predictors, with traffic volume and traffic density as the outcomes. Weather Condition remains available descriptively and is not inserted into the reported Tables 3-8 specification.
+
+
+## Paper-level validation reproduction
+
+The paper presents four actual-versus-predicted validation figures: dry-season traffic volume, dry-season traffic density, wet-season traffic volume, and wet-season traffic density. These validation figures are described at the season level rather than as four separate road-specific validation models.
+
+Accordingly, the repository includes a separate paper-validation routine that pools the two roads within each season, uses the same three continuous weather predictors as the primary model, and evaluates the held-out observations with test-set R². The implementation uses an 80/20 random split with a fixed random seed (42) to make the reproduction deterministic. The exact split/seed is treated as an implementation detail where it is not explicitly stated in the paper.
+
+The paper-reported validation R² values are kept as document reference values rather than hard-coded model outputs: 0.098 and 0.299 for dry-season volume and density, and 0.068 and 0.345 for wet-season volume and density.
+
+The existing road-season random holdout and chronological validation routines are retained only as supplementary reproducibility diagnostics. They do not modify the paper's core regression code or replace the paper-level validation reproduction.
+
+## Descriptive analyses reproduced from the paper
+
+The repository additionally reproduces the paper's reported descriptive analyses:
+
+- seasonal vehicle composition for private vehicles, commercial buses and trucks, including Figure 3-style percentages;
+- precipitation-level boxplots for traffic volume and density, corresponding to Figures 4 and 5;
+- the combined 0-versus-1+ rainfall comparison and percentage reduction reported in Table 2;
+- traffic volume and density against temperature, corresponding to Figures 6 and 7;
+- traffic volume and density against dew point, corresponding to Figures 8 and 9;
+- the combined-data weather regression summary corresponding to Table 1.
+
+These additions are separate from the primary season-road regression tables. The primary OLS specification remains unchanged.
+
+Weather Condition is deliberately left as it appears in the existing paper-aligned code. It is not added to or removed from the primary regression specification.
