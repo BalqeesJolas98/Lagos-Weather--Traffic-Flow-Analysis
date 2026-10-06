@@ -42,6 +42,9 @@ def standardize_sheet(df, road, season):
         ),
         "Traffic_Volume": _find_col(df, ["Total"]),
         "Traffic_Density": _find_col(df, ["Traffic Density", "Traffic_Density"]),
+        "Private_Vehicle": _find_col(df, ["Private Vehicle", "Private_Vehicle"], required=False),
+        "Commercial_Bus": _find_col(df, ["Commercial Bus", "Commercial_Bus"], required=False),
+        "Truck": _find_col(df, ["Truck"], required=False),
     }
 
     return pd.DataFrame(
@@ -54,6 +57,9 @@ def standardize_sheet(df, road, season):
             "Precipitation": pd.to_numeric(df[colmap["Precipitation"]], errors="coerce"),
             "Traffic_Volume": pd.to_numeric(df[colmap["Traffic_Volume"]], errors="coerce"),
             "Traffic_Density": pd.to_numeric(df[colmap["Traffic_Density"]], errors="coerce"),
+            "Private_Vehicle": pd.to_numeric(df[colmap["Private_Vehicle"]], errors="coerce") if colmap["Private_Vehicle"] else pd.Series(pd.NA, index=df.index, dtype="Float64"),
+            "Commercial_Bus": pd.to_numeric(df[colmap["Commercial_Bus"]], errors="coerce") if colmap["Commercial_Bus"] else pd.Series(pd.NA, index=df.index, dtype="Float64"),
+            "Truck": pd.to_numeric(df[colmap["Truck"]], errors="coerce") if colmap["Truck"] else pd.Series(pd.NA, index=df.index, dtype="Float64"),
             "Condition": (
                 df[condition_col].astype("string").str.strip()
                 if condition_col
