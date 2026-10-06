@@ -82,7 +82,9 @@ def rainfall_boxplot(data, outcome, title, out_file):
     groups = [frame.loc[frame["Precipitation"] == level, outcome] for level in levels]
 
     fig, ax = plt.subplots(figsize=(9, 5))
-    ax.boxplot(groups, labels=[f"{level:g}" for level in levels])
+    ax.boxplot(groups)
+    ax.set_xticks(range(1, len(levels) + 1))
+    ax.set_xticklabels([f"{level:g}" for level in levels])
     ax.set_xlabel("Precipitation (mm)")
     ax.set_ylabel(outcome.replace("_", " "))
     ax.set_title(title)
