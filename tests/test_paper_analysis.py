@@ -40,11 +40,21 @@ def test_traffic_composition_preserves_seasonal_counts():
 def test_rainfall_comparison_uses_zero_vs_positive_precipitation():
     result = precipitation_binary_comparison(sample_paper_data())
     volume = result.loc[result["Traffic_Metric"] == "Traffic_Volume"].iloc[0]
-    assert volume["No_Rain_Average"] == 1046
-    assert volume["Rain_Average"] == 1044
+    assert volume["No_Rain_Average"] == 996
+    assert volume["Rain_Average"] == 994
     assert np.isclose(
         volume["Percentage_Reduction"],
-        0.1912045889,
+        0.2008032129,
+    )
+
+    density = result.loc[
+        result["Traffic_Metric"] == "Traffic_Density"
+    ].iloc[0]
+    assert density["No_Rain_Average"] == 59.6
+    assert density["Rain_Average"] == 59.4
+    assert np.isclose(
+        density["Percentage_Reduction"],
+        0.3355704698,
     )
 
 
