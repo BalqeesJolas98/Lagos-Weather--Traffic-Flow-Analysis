@@ -12,6 +12,7 @@ from src.regression_models import (
     model_summary, validate_chronological, validate_holdout, vif_table,
 )
 from src.visualization import actual_vs_predicted, residual_plot
+from src.validation_helpers import chronological_validation_or_skip
 from src.paper_analysis import (
     combined_weather_regression,
     paper_validation,
@@ -25,26 +26,6 @@ from src.paper_analysis import (
 
 RESULTS = ROOT / "results"
 
-def chronological_validation_or_skip(model_data, outcome, season, road):
-    """Run chronological validation when enough valid dates are available."""
-    if model_data["Date_Time"].notna().sum() >= 5:
-        metrics, predictions, model = validate_chronological(
-            model_data, outcome, season, road
-        )
-        return metrics, predictions, model
-
-    return (
-        {
-            "Season": season,
-            "Road": road,
-            "Outcome": outcome,
-            "Validation": "Chronological",
-            "Status": "Skipped",
-            "Reason": "Fewer than five valid Date_Time observations.",
-        },
-        pd.DataFrame(),
-        None,
-    )
 for directory in ["tables", "figures", "predictions"]:
     (RESULTS / directory).mkdir(parents=True, exist_ok=True)
 
