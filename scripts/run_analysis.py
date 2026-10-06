@@ -129,6 +129,7 @@ def run():
 
                 random_metrics, predictions, _ = validate_holdout(model_data, outcome, season, road)
                 validation_rows.append(random_metrics)
+                tag = f"{season}_{road.replace(' ', '_')}_{outcome}"
                 chronological_metrics, chronological_predictions, _ = (
                     chronological_validation_or_skip(
                         model_data, outcome, season, road
@@ -141,7 +142,6 @@ def run():
                         index=False,
                     )
 
-                tag = f"{season}_{road.replace(' ', '_')}_{outcome}"
                 predictions.to_csv(RESULTS / "predictions" / f"{tag}_random_holdout_predictions.csv", index=False)
                 actual_vs_predicted(
                     predictions[outcome], predictions["Predicted"],
