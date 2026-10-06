@@ -24,6 +24,27 @@ from src.paper_analysis import (
 )
 
 RESULTS = ROOT / "results"
+
+def chronological_validation_or_skip(model_data, outcome, season, road):
+    """Run chronological validation when enough valid dates are available."""
+    if model_data["Date_Time"].notna().sum() >= 5:
+        metrics, predictions, model = validate_chronological(
+            model_data, outcome, season, road
+        )
+        return metrics, predictions, model
+
+    return (
+        {
+            "Season": season,
+            "Road": road,
+            "Outcome": outcome,
+            "Validation": "Chronological",
+            "Status": "Skipped",
+            "Reason": "Fewer than five valid Date_Time observations.",
+        },
+        pd.DataFrame(),
+        None,
+    )
 for directory in ["tables", "figures", "predictions"]:
     (RESULTS / directory).mkdir(parents=True, exist_ok=True)
 
@@ -108,25 +129,16 @@ def run():
 
                 random_metrics, predictions, _ = validate_holdout(model_data, outcome, season, road)
                 validation_rows.append(random_metrics)
-                if model_data["Date_Time"].notna().sum() >= 5:
-                    chronological_metrics, chronological_predictions, _ = validate_chronological(
+                chronological_metrics, chronological_predictions, _ = (
+                    chronological_validation_or_skip(
                         model_data, outcome, season, road
                     )
-                    chronological_rows.append(chronological_metrics)
+                )
+                chronological_rows.append(chronological_metrics)
+                if not chronological_predictions.empty:
                     chronological_predictions.to_csv(
                         RESULTS / "predictions" / f"{tag}_chronological_predictions.csv",
                         index=False,
-                    )
-                else:
-                    chronological_rows.append(
-                        {
-                            "Season": season,
-                            "Road": road,
-                            "Outcome": outcome,
-                            "Validation": "Chronological",
-                            "Status": "Skipped",
-                            "Reason": "Fewer than five valid Date_Time observations.",
-                        }
                     )
 
                 tag = f"{season}_{road.replace(' ', '_')}_{outcome}"
