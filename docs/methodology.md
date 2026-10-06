@@ -39,12 +39,7 @@ VIF is calculated once for each season-road predictor set because the predictors
 
 ## Validation
 
-The repository reports two validation diagnostics:
-
-1. An 80/20 random holdout with random_state=42.
-2. A chronological holdout using the final 20 percent after sorting by the actual Date_Time field.
-
-The chronological check is an additional robustness diagnostic. It does not replace the fitted OLS statistics or the paper's reported validation values.
+The repository keeps the paper-level validation reproduction separate from supplementary diagnostics. The paper-level procedure is documented below. The existing road-season random holdout and chronological holdout remain supplementary checks; chronological validation is skipped when fewer than five valid observation dates are available.
 
 ## Significance
 

@@ -43,3 +43,23 @@ def test_vif_is_finite_and_one_row_per_predictor():
     assert list(result["Predictor"]) == PREDICTORS
     assert len(result) == len(PREDICTORS)
     assert np.isfinite(result["VIF"]).all()
+
+
+def test_chronological_validation_skips_when_dates_are_missing():
+    import importlib.util
+    from pathlib import Path
+
+    path = Path(__file__).parents[1] / "scripts" / "run_analysis.py"
+    spec = importlib.util.spec_from_file_location("run_analysis", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    data = sample_data().drop(columns=["Date_Time"])
+    data["Date_Time"] = pd.NaT
+    metrics, predictions, model = module.chronological_validation_or_skip(
+        data, "Traffic_Volume", "Dry", "Broad Street"
+    )
+    assert metrics["Validation"] == "Chronological"
+    assert metrics["Status"] == "Skipped"
+    assert predictions.empty
+    assert model is None
