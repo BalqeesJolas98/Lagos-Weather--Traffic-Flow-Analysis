@@ -13,10 +13,12 @@ from src.paper_analysis import (
 
 
 def sample_paper_data():
+    temperatures = list(range(28, 38)) + list(range(27, 37))
+    dew_offsets = [5, 4, 6, 5, 4, 6, 5, 4, 6, 5] * 2
     return pd.DataFrame({
         "Season": ["Dry"] * 10 + ["Wet"] * 10,
-        "Temperature": list(range(28, 38)) + list(range(27, 37)),
-        "Dew_Point": list(range(23, 33)) + list(range(22, 32)),
+        "Temperature": temperatures,
+        "Dew_Point": [t - offset for t, offset in zip(temperatures, dew_offsets)],
         "Precipitation": [0, 2, 0, 5, 1, 0, 3, 0, 4, 0] * 2,
         "Traffic_Volume": list(range(1000, 1100, 10)) + list(range(900, 1000, 10)),
         "Traffic_Density": list(range(60, 70)) + list(range(50, 60)),
