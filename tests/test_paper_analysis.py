@@ -1,38 +1,68 @@
 import numpy as np
 import pandas as pd
-from src.paper_analysis import combined_weather_regression, precipitation_binary_comparison, traffic_composition
+
+from src.paper_analysis import (
+    combined_weather_regression,
+    paper_validation,
+    precipitation_binary_comparison,
+    traffic_composition,
+)
 
 
 def sample_paper_data():
     return pd.DataFrame({
-        "Season": ["Dry", "Dry", "Wet", "Wet"],
-        "Temperature": [28, 30, 27, 29],
-        "Dew_Point": [23, 24, 22, 25],
-        "Precipitation": [0, 2, 0, 5],
-        "Traffic_Volume": [1000, 800, 1100, 700],
-        "Traffic_Density": [60, 50, 65, 45],
-        "Private_Vehicle": [500, 400, 550, 350],
-        "Commercial_Bus": [480, 380, 530, 330],
-        "Truck": [20, 20, 20, 20],
+        "Season": ["Dry"] * 10 + ["Wet"] * 10,
+        "Temperature": list(range(28, 38)) + list(range(27, 37)),
+        "Dew_Point": list(range(23, 33)) + list(range(22, 32)),
+        "Precipitation": [0, 2, 0, 5, 1, 0, 3, 0, 4, 0] * 2,
+        "Traffic_Volume": list(range(1000, 1100, 10)) + list(range(900, 1000, 10)),
+        "Traffic_Density": list(range(60, 70)) + list(range(50, 60)),
+        "Private_Vehicle": [500] * 20,
+        "Commercial_Bus": [480] * 20,
+        "Truck": [20] * 20,
     })
 
 
 def test_traffic_composition_preserves_seasonal_counts():
     result = traffic_composition(sample_paper_data())
     assert set(result["Season"]) == {"Dry", "Wet"}
-    assert np.isclose(result.loc[result["Season"] == "Dry", "Commercial_Bus_Percent"].iloc[0],
-                      860 / 1800 * 100)
+    assert np.isclose(
+        result.loc[
+            result["Season"] == "Dry", "Commercial_Bus_Percent"
+        ].iloc[0],
+        480 / 1000 * 100,
+    )
 
 
 def test_rainfall_comparison_uses_zero_vs_positive_precipitation():
     result = precipitation_binary_comparison(sample_paper_data())
     volume = result.loc[result["Traffic_Metric"] == "Traffic_Volume"].iloc[0]
-    assert volume["No_Rain_Average"] == 1050
-    assert volume["Rain_Average"] == 750
-    assert np.isclose(volume["Percentage_Reduction"], 28.5714285714)
+    assert volume["No_Rain_Average"] == 1030
+    assert volume["Rain_Average"] == 1020
+    assert np.isclose(
+        volume["Percentage_Reduction"],
+        0.9708737864,
+    )
 
 
 def test_combined_weather_regression_returns_both_outcomes():
     result = combined_weather_regression(sample_paper_data())
     assert set(result["Outcome"]) == {"Traffic_Volume", "Traffic_Density"}
-    assert set(result["Variable"]) == {"Temperature", "Dew_Point", "Precipitation"}
+    assert set(result["Variable"]) == {
+        "Temperature",
+        "Dew_Point",
+        "Precipitation",
+    }
+
+
+def test_paper_validation_is_season_level_and_reproducible():
+    first, first_predictions = paper_validation(sample_paper_data())
+    second, second_predictions = paper_validation(sample_paper_data())
+    pd.testing.assert_frame_equal(first, second)
+    for key in first_predictions:
+        pd.testing.assert_frame_equal(
+            first_predictions[key], second_predictions[key]
+        )
+    assert set(first["Validation"]) == {"Paper_Season_Level_80_20_Holdout"}
+    assert set(first["Season"]) == {"Dry", "Wet"}
+    assert set(first["Outcome"]) == {"Traffic_Volume", "Traffic_Density"}
