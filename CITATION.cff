@@ -3,7 +3,7 @@ title: "Impact of Weather on Traffic Flow Characteristics of Roads in Lagos Stat
 type: software
 authors:
   - name: "Balqees Omobolanle Jolaosho"
-message: "If you use this code, please cite the associated research work."
+message: "This repository is the executable analytical record underlying the associated research work; cite the repository when referring to the analysis implementation."
 license: MIT
 version: 1.0.0
 date-released: "2026-10-06"
