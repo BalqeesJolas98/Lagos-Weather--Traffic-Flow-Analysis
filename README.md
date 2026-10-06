@@ -111,7 +111,7 @@ Repository author/maintainer: **balqeesJolas98**.
 
 ### Validation reproduction and supplementary diagnostics
 
-The paper reports actual-versus-predicted validation figures at the **season level**, pooling the two study roads within each season, for traffic volume and traffic density. The repository therefore generates a separate `paper_validation.csv` and four corresponding actual-versus-predicted figures using the same three weather predictors as the primary model.
+The paper reports actual-versus-predicted validation figures at the **season level**, pooling the two study roads within each season, for traffic volume and traffic density. The repository therefore generates a separate `paper_validation.csv` and four corresponding actual-versus-predicted figures using the same three weather predictors as the primary model. This is a paper-aligned validation reproduction, not a claim that the paper's exact numerical R² values can be regenerated without the paper's original split/sample-selection details.
 
 The paper's reported validation R² values are documented separately for comparison:
 
@@ -120,7 +120,7 @@ The paper's reported validation R² values are documented separately for compari
 - Wet season, traffic volume: 0.068
 - Wet season, traffic density: 0.345
 
-The implementation uses an explicit 80/20 random holdout with `random_state=42` so that the validation reproduction is deterministic. Where the paper does not state the exact split seed or sampling implementation, these details are treated as a reproducibility convention rather than presented as textually reported methodology from the paper.
+The implementation uses an explicit 80/20 random holdout with `random_state=42` so that the validation implementation is deterministic. The paper does not state enough split/seed details to establish that this exact sampling procedure produced its reported R² values. Therefore, the paper R² values are retained only as reference values, and the generated comparison table reports any difference rather than forcing agreement.
 
 The existing road-season random holdout and chronological validation diagnostics remain in the repository as **supplementary diagnostics**. They do not replace or alter the paper-level validation reproduction and do not change the primary regression results.
 
