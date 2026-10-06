@@ -15,6 +15,7 @@ from src.visualization import actual_vs_predicted, residual_plot
 from src.paper_analysis import (
     combined_weather_regression,
     paper_validation,
+    paper_validation_reference_values,
     precipitation_binary_comparison,
     rainfall_boxplot,
     traffic_composition,
@@ -46,6 +47,22 @@ def run():
     paper_validation_rows, paper_predictions = paper_validation(data)
     paper_validation_rows.to_csv(
         RESULTS / "tables" / "paper_validation.csv", index=False
+    )
+    paper_validation_reference = paper_validation_reference_values()
+    paper_validation_reference.to_csv(
+        RESULTS / "tables" / "paper_validation_reference_values.csv", index=False
+    )
+    paper_validation_comparison = paper_validation_reference.merge(
+        paper_validation_rows,
+        on=["Season", "Outcome"],
+        how="left",
+    )
+    paper_validation_comparison["R2_Difference"] = (
+        paper_validation_comparison["Validation_R2"]
+        - paper_validation_comparison["Paper_Validation_R2"]
+    )
+    paper_validation_comparison.to_csv(
+        RESULTS / "tables" / "paper_validation_vs_reference.csv", index=False
     )
     for (season, outcome), predictions in paper_predictions.items():
         predictions.to_csv(
