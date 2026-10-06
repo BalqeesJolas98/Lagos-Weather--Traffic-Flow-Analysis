@@ -5,7 +5,10 @@ from src.paper_analysis import (
     combined_weather_regression,
     paper_validation,
     precipitation_binary_comparison,
+    rainfall_boxplot,
     traffic_composition,
+    vehicle_composition_plot,
+    weather_scatter,
 )
 
 
@@ -66,3 +69,32 @@ def test_paper_validation_is_season_level_and_reproducible():
     assert set(first["Validation"]) == {"Paper_Season_Level_80_20_Holdout"}
     assert set(first["Season"]) == {"Dry", "Wet"}
     assert set(first["Outcome"]) == {"Traffic_Volume", "Traffic_Density"}
+
+
+def test_rainfall_boxplot_writes_figure(tmp_path):
+    rainfall_boxplot(
+        sample_paper_data(),
+        "Traffic_Volume",
+        "Test rainfall",
+        tmp_path / "rainfall.png",
+    )
+    assert (tmp_path / "rainfall.png").exists()
+
+
+def test_vehicle_composition_plot_writes_figure(tmp_path):
+    vehicle_composition_plot(
+        sample_paper_data(),
+        tmp_path / "composition.png",
+    )
+    assert (tmp_path / "composition.png").exists()
+
+
+def test_weather_scatter_writes_figure(tmp_path):
+    weather_scatter(
+        sample_paper_data(),
+        "Traffic_Volume",
+        "Temperature",
+        "Test temperature",
+        tmp_path / "scatter.png",
+    )
+    assert (tmp_path / "scatter.png").exists()
