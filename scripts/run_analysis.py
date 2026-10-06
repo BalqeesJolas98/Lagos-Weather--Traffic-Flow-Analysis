@@ -12,8 +12,15 @@ from src.regression_models import (
     model_summary, validate_chronological, validate_holdout, vif_table,
 )
 from src.visualization import actual_vs_predicted, residual_plot
-from src.paper_analysis import (combined_weather_regression, precipitation_binary_comparison,
-                                rainfall_boxplot, traffic_composition, weather_scatter)
+from src.paper_analysis import (
+    combined_weather_regression,
+    paper_validation,
+    precipitation_binary_comparison,
+    rainfall_boxplot,
+    traffic_composition,
+    vehicle_composition_plot,
+    weather_scatter,
+)
 
 RESULTS = ROOT / "results"
 for directory in ["tables", "figures", "predictions"]:
@@ -26,12 +33,34 @@ def run():
     traffic_composition(data).to_csv(
         RESULTS / "tables" / "traffic_composition_by_season.csv", index=False
     )
+    vehicle_composition_plot(
+        data, RESULTS / "figures" / "traffic_composition_by_season.png"
+    )
     precipitation_binary_comparison(data).to_csv(
         RESULTS / "tables" / "rain_vs_no_rain_comparison.csv", index=False
     )
     combined_weather_regression(data).to_csv(
         RESULTS / "tables" / "combined_weather_regression.csv", index=False
     )
+
+    paper_validation_rows, paper_predictions = paper_validation(data)
+    paper_validation_rows.to_csv(
+        RESULTS / "tables" / "paper_validation.csv", index=False
+    )
+    for (season, outcome), predictions in paper_predictions.items():
+        predictions.to_csv(
+            RESULTS / "predictions"
+            / f"{season}_combined_roads_{outcome}_paper_validation_predictions.csv",
+            index=False,
+        )
+        actual_vs_predicted(
+            predictions["Actual"],
+            predictions["Predicted"],
+            f"{season} Season - {outcome}: Paper Validation Reproduction",
+            RESULTS
+            / "figures"
+            / f"{season}_combined_roads_{outcome}_paper_validation.png",
+        )
     for outcome in ["Traffic_Volume", "Traffic_Density"]:
         rainfall_boxplot(
             data, outcome,
