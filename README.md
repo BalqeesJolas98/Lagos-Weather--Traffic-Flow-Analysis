@@ -1,10 +1,10 @@
 # Lagos Weather-Traffic Flow Analysis
 
-Reproducible Python analysis for the study **Impact of Weather on Traffic Flow Characteristics of Roads in Lagos State, Nigeria**.
+**Impact of Weather on Traffic Flow Characteristics of Roads in Lagos State, Nigeria**.
 
 ## Research basis
 
-This repository follows the methodology, results and discussion in the associated paper. The purpose is to reproduce and document the analyses described in the paper, not to replace them with a different statistical study.
+This repository follows the methodology, results and discussion in the associated paper. 
 
 The paper investigates traffic observations from **Marina Road and Broad Street** during the **dry season (December and January)** and **wet season (April and May)**. Traffic data were obtained through video-based traffic counting and weather data were obtained from the Nigerian Meteorological Agency (NIMET).
 
