@@ -18,3 +18,14 @@ def test_standardize_sheet_handles_source_column_variants():
     assert result.loc[0, "Precipitation"] == 0
     assert result.loc[0, "Condition"] == "Clear"
     assert pd.notna(result.loc[0, "Date_Time"])
+
+
+def test_standardize_sheet_without_date_keeps_pipeline_compatible():
+    source = pd.DataFrame({
+        "Total": [100], "Traffic Density": [20],
+        "Temp ( °C)": [28], "Dew Point ( °C)": [24],
+        "Precipitation(mm)": [0],
+    })
+    result = standardize_sheet(source, "Broad Street", "Dry")
+    assert "Date_Time" in result.columns
+    assert pd.isna(result.loc[0, "Date_Time"])
