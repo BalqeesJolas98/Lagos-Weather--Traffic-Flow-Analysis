@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+title: "Impact of Weather on Traffic Flow Characteristics of Roads in Lagos State: Reproducible Regression Analysis"
+type: software
+authors:
+  - family-names: "Baad"
+    given-names: "Johan"
+message: "If you use this code, please cite the associated thesis/research work."
+license: MIT
+version: 1.0.0

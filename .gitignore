@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.env
+.ipynb_checkpoints/
+.DS_Store
+
+# Local research data - do not publish raw datasets by accident
+data/*.xlsx
+data/*.xls
+
+# Generated outputs
+results/**/*.csv
+results/**/*.png
+results/**/*.pdf
+results/**/*.xlsx
+results/**/*.docx
+results/**/*.html
