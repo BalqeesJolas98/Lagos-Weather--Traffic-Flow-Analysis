@@ -39,7 +39,7 @@ The repository therefore preserves Weather Condition in the standardized data bu
 
 ## Statistical outputs
 
-The pipeline now reproduces the paper's reported descriptive and regression analyses, including traffic composition, the combined rain/no-rain comparison, precipitation boxplots, temperature and dew-point relationship plots, and the season-road OLS model tables.
+The pipeline reproduces the paper's reported descriptive analyses and keeps the paper's primary season-road OLS model unchanged. It includes traffic composition, the combined 0-versus-1+ rain/no-rain comparison, precipitation-level boxplots, temperature and dew-point relationship plots, and the paper's combined-data Table 1-style regression summary.
 
 The repository does **not** invent an infrastructure-durability outcome or a road-capacity model. Although the paper discusses flooding, heat, infrastructure performance and capacity conceptually, the supplied traffic dataset does not contain a direct infrastructure-condition or capacity outcome, so those topics are treated as discussion/limitations rather than fabricated quantitative models.
 
@@ -96,7 +96,7 @@ Generated tables, figures, predictions and equations are written to results/.
 
     pytest -q tests
 
-Tests cover regression construction, model summaries, random holdout reproducibility, date-based chronological validation, VIF construction, source-column standardization, traffic composition, rain/no-rain comparison and combined weather regression.
+Tests cover regression construction, model summaries, random holdout reproducibility, date-based chronological validation, VIF construction, source-column standardization, traffic composition, rain/no-rain comparison, combined weather regression and the explicit paper-validation reproduction.
 
 ## Reproducibility
 
@@ -107,3 +107,23 @@ The paper reports modest explanatory power and interprets the weather-only model
 ## Authorship
 
 Repository author/maintainer: **balqeesJolas98**.
+
+
+### Validation reproduction and supplementary diagnostics
+
+The paper reports actual-versus-predicted validation figures at the **season level**, pooling the two study roads within each season, for traffic volume and traffic density. The repository therefore generates a separate `paper_validation.csv` and four corresponding actual-versus-predicted figures using the same three weather predictors as the primary model.
+
+The paper's reported validation R² values are documented separately for comparison:
+
+- Dry season, traffic volume: 0.098
+- Dry season, traffic density: 0.299
+- Wet season, traffic volume: 0.068
+- Wet season, traffic density: 0.345
+
+The implementation uses an explicit 80/20 random holdout with `random_state=42) so that the validation reproduction is deterministic. Where the paper does not state the exact split seed or sampling implementation, these details are treated as a reproducibility convention rather than presented as textually reported methodology from the paper.
+
+The existing road-season random holdout and chronological validation diagnostics remain in the repository as **supplementary diagnostics**. They do not replace or alter the paper-level validation reproduction and do not change the primary regression results.
+
+### Weather Condition
+
+Weather Condition is intentionally left unchanged. It remains in the standardized dataset and is treated exactly as already specified in the paper-aligned code. It is not inserted into the primary Tables 3-8 regression specification.
