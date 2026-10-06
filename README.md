@@ -120,7 +120,7 @@ The paper's reported validation R² values are documented separately for compari
 - Wet season, traffic volume: 0.068
 - Wet season, traffic density: 0.345
 
-The implementation uses an explicit 80/20 random holdout with `random_state=42) so that the validation reproduction is deterministic. Where the paper does not state the exact split seed or sampling implementation, these details are treated as a reproducibility convention rather than presented as textually reported methodology from the paper.
+The implementation uses an explicit 80/20 random holdout with `random_state=42` so that the validation reproduction is deterministic. Where the paper does not state the exact split seed or sampling implementation, these details are treated as a reproducibility convention rather than presented as textually reported methodology from the paper.
 
 The existing road-season random holdout and chronological validation diagnostics remain in the repository as **supplementary diagnostics**. They do not replace or alter the paper-level validation reproduction and do not change the primary regression results.
 
