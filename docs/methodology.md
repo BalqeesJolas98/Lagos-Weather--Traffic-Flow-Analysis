@@ -70,9 +70,9 @@ The primary season-road OLS model remains unchanged: temperature, dew point and 
 
 The paper presents four actual-versus-predicted validation figures: dry-season traffic volume, dry-season traffic density, wet-season traffic volume, and wet-season traffic density. These validation figures are described at the season level rather than as four separate road-specific validation models.
 
-Accordingly, the repository includes a separate paper-validation routine that pools the two roads within each season, uses the same three continuous weather predictors as the primary model, and evaluates the held-out observations with test-set R². The implementation uses an 80/20 random split with a fixed random seed (42) to make the reproduction deterministic. The exact split/seed is treated as an implementation detail where it is not explicitly stated in the paper.
+Accordingly, the repository includes a separate paper-validation routine that pools the two roads within each season, uses the same three continuous weather predictors as the primary model, and evaluates the held-out observations with test-set R². The implementation uses an 80/20 random split with a fixed random seed (42) to make the validation implementation deterministic. Because the paper does not state enough sampling details to identify its exact split and seed, the repository does not claim to reproduce the paper's numerical R² values exactly.
 
-The paper-reported validation R² values are kept as document reference values rather than hard-coded model outputs: 0.098 and 0.299 for dry-season volume and density, and 0.068 and 0.345 for wet-season volume and density.
+The paper-reported validation R² values are kept as document reference values rather than hard-coded model outputs: 0.098 and 0.299 for dry-season volume and density, and 0.068 and 0.345 for wet-season volume and density. The generated `paper_validation_vs_reference.csv` explicitly shows the difference between the reproducible implementation and those reported values.
 
 The existing road-season random holdout and chronological validation routines are retained only as supplementary reproducibility diagnostics. They do not modify the paper's core regression code or replace the paper-level validation reproduction.
 
