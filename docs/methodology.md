@@ -1,20 +1,51 @@
 # Reproducible methodology
 
+This repository follows the supplied paper, **Impact of Weather on Traffic Flow Characteristics of Roads in Lagos State, Nigeria**.
+
 ## Study design
-This repository implements the statistical analysis for the study Impact of Weather on Traffic Flow Characteristics of Roads in Lagos State, Nigeria. Dry-season observations from Marina Road and Broad Street are grouped as Dry, and wet-season observations from the same roads are grouped as Wet. The wet-season auxiliary weather-only worksheet is excluded because it does not contain the traffic variables required by the regression workflow.
 
-## Primary model
-The primary model reproduces the supplied model-performance document: Traffic Volume = beta0 + beta1 Temperature + beta2 Dew Point + beta3 Precipitation + error. It is estimated separately for Dry/Broad Street, Dry/Marina Road, Wet/Broad Street, and Wet/Marina Road. The repository does not add Condition to this primary model because the supplied model-performance document specifies only temperature, dew point and precipitation as predictors.
+Traffic and weather observations were collected over four months:
 
-Traffic Density is analysed in a parallel extension using the same three predictors. This extension should be reported separately from the document-reproduction volume model.
+- Dry season: December and January
+- Wet season: April and May
+
+The analysis covers Marina Road and Broad Street. The wet-season auxiliary weather-only worksheet is excluded from the traffic regression because it does not contain the traffic variables required by the paper.
+
+## Traffic variables
+
+The paper considers traffic volume and traffic density. Traffic speed was assumed constant throughout the study. The paper identifies this assumption as a limitation because speed, volume and density are interdependent.
+
+## Weather predictors
+
+The reported regression models use temperature, dew point and precipitation:
+
+Y = beta0 + beta1 Temperature + beta2 Dew Point + beta3 Precipitation + error
+
+Models are estimated separately for each road and season.
+
+## Weather Condition
+
+The paper describes Weather Condition as a categorical variable and mentions one-hot encoding during preprocessing. However, the reported model-performance tables and coefficient tables use only temperature, dew point and precipitation. The code therefore preserves Weather Condition but does not add it to the primary Tables 3-8 reproduction.
 
 ## Statistical outputs
-The code reports R, R-squared, adjusted R-squared, standard error of estimate, F-statistic, overall p-value, coefficients, standard errors, t-statistics, p-values, confidence intervals, standardized beta coefficients, ANOVA quantities, VIF, AIC and BIC.
+
+The code reproduces or supports the reported R, R-squared, adjusted R-squared, standard error of estimate, F-statistic, overall p-value, regression coefficients, standard errors, t-statistics, predictor p-values, standardized beta coefficients and ANOVA quantities.
+
+Additional VIF, AIC/BIC and validation diagnostics are included as reproducibility checks.
+
+## VIF
+
+VIF is calculated once for each season-road predictor set because the predictors are identical for the volume and density models. The VIF design matrix includes an intercept, while the intercept itself is not reported as a predictor VIF.
 
 ## Validation
-Two out-of-sample checks are produced: an 80/20 random holdout with random_state=42, and a chronological holdout using the final 20 percent of time-ordered observations. The chronological check is included because traffic and weather observations are time ordered. Neither validation R-squared should be confused with the fitted-sample OLS R-squared used in the regression tables.
 
-## Hypotheses
-H0: Temperature, dew point and precipitation have no statistically significant joint effect on traffic volume.
+The repository reports two validation diagnostics:
 
-H1: At least one of temperature, dew point and precipitation has a statistically significant effect on traffic volume.
+1. An 80/20 random holdout with random_state=42.
+2. A chronological holdout using the final 20 percent after sorting by the actual Date_Time field.
+
+The chronological check is an additional robustness diagnostic. It does not replace the fitted OLS statistics or the paper's reported validation values.
+
+## Significance
+
+The paper uses a 5% significance threshold, p < 0.05.
