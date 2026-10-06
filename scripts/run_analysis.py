@@ -12,6 +12,8 @@ from src.regression_models import (
     model_summary, validate_chronological, validate_holdout, vif_table,
 )
 from src.visualization import actual_vs_predicted, residual_plot
+from src.paper_analysis import (combined_weather_regression, precipitation_binary_comparison,
+                                rainfall_boxplot, traffic_composition, weather_scatter)
 
 RESULTS = ROOT / "results"
 for directory in ["tables", "figures", "predictions"]:
@@ -21,6 +23,28 @@ for directory in ["tables", "figures", "predictions"]:
 def run():
     data = load_data()
     data.to_csv(RESULTS / "tables" / "cleaned_combined_dataset.csv", index=False)
+    traffic_composition(data).to_csv(
+        RESULTS / "tables" / "traffic_composition_by_season.csv", index=False
+    )
+    precipitation_binary_comparison(data).to_csv(
+        RESULTS / "tables" / "rain_vs_no_rain_comparison.csv", index=False
+    )
+    combined_weather_regression(data).to_csv(
+        RESULTS / "tables" / "combined_weather_regression.csv", index=False
+    )
+    for outcome in ["Traffic_Volume", "Traffic_Density"]:
+        rainfall_boxplot(
+            data, outcome,
+            f"Effect of Precipitation on {outcome.replace('_', ' ')}",
+            RESULTS / "figures" / f"precipitation_boxplot_{outcome}.png",
+        )
+        for predictor in ["Temperature", "Dew_Point"]:
+            weather_scatter(
+                data, outcome, predictor,
+                f"{outcome.replace('_', ' ')} vs {predictor.replace('_', ' ')}",
+                RESULTS / "figures" / f"{outcome}_{predictor}_scatter.png",
+            )
+
     summary_rows, coefficient_frames, anova_frames = [], [], []
     vif_frames, validation_rows, chronological_rows = [], [], []
 

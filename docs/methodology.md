@@ -49,3 +49,18 @@ The chronological check is an additional robustness diagnostic. It does not repl
 ## Significance
 
 The paper uses a 5% significance threshold, p < 0.05.
+
+
+## Coverage of the paper's results section
+
+The executable pipeline also covers the non-ML descriptive analyses reported before the season-road regression tables:
+
+- traffic composition by season for private vehicles, commercial buses and trucks;
+- the combined no-rain versus rainfall-present comparison using the paper's 0 versus 1+ precipitation definition;
+- precipitation boxplots for traffic volume and density;
+- traffic-volume and traffic-density relationships with temperature and dew point;
+- combined-data weather regression summaries corresponding to the paper's Table 1-style analysis.
+
+The paper's discussion of infrastructure durability/performance, flooding, heat effects and road capacity is not converted into a quantitative model because the supplied dataset does not contain a direct infrastructure-condition or capacity outcome. Doing so would introduce variables and methodology that are not supported by the study data.
+
+The primary season-road OLS model remains unchanged: temperature, dew point and precipitation are the predictors, with traffic volume and traffic density as the outcomes. Weather Condition remains available descriptively and is not inserted into the reported Tables 3-8 specification.
