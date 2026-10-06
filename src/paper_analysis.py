@@ -203,3 +203,16 @@ def weather_scatter(data, outcome, predictor, title, out_file):
     fig.tight_layout()
     fig.savefig(out_file, dpi=300)
     plt.close(fig)
+
+
+def paper_validation_reference_values():
+    """Validation R² values reported in Figures 10-13, for comparison only."""
+    return pd.DataFrame(
+        [
+            ["Dry", "Traffic_Volume", 0.098],
+            ["Dry", "Traffic_Density", 0.299],
+            ["Wet", "Traffic_Volume", 0.068],
+            ["Wet", "Traffic_Density", 0.345],
+        ],
+        columns=["Season", "Outcome", "Paper_Validation_R2"],
+    )
