@@ -108,16 +108,29 @@ def run():
 
                 random_metrics, predictions, _ = validate_holdout(model_data, outcome, season, road)
                 validation_rows.append(random_metrics)
-                chronological_metrics, chronological_predictions, _ = validate_chronological(
-                    model_data, outcome, season, road
-                )
-                chronological_rows.append(chronological_metrics)
+                if model_data["Date_Time"].notna().sum() >= 5:
+                    chronological_metrics, chronological_predictions, _ = validate_chronological(
+                        model_data, outcome, season, road
+                    )
+                    chronological_rows.append(chronological_metrics)
+                    chronological_predictions.to_csv(
+                        RESULTS / "predictions" / f"{tag}_chronological_predictions.csv",
+                        index=False,
+                    )
+                else:
+                    chronological_rows.append(
+                        {
+                            "Season": season,
+                            "Road": road,
+                            "Outcome": outcome,
+                            "Validation": "Chronological",
+                            "Status": "Skipped",
+                            "Reason": "Fewer than five valid Date_Time observations.",
+                        }
+                    )
 
                 tag = f"{season}_{road.replace(' ', '_')}_{outcome}"
                 predictions.to_csv(RESULTS / "predictions" / f"{tag}_random_holdout_predictions.csv", index=False)
-                chronological_predictions.to_csv(
-                    RESULTS / "predictions" / f"{tag}_chronological_predictions.csv", index=False
-                )
                 actual_vs_predicted(
                     predictions[outcome], predictions["Predicted"],
                     f"{season} - {road} - {outcome}: Random Holdout",
