@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+
+from src.validation_helpers import chronological_validation_or_skip
 from src.regression_models import PREDICTORS, fit_ols, model_summary, validate_chronological, validate_holdout, vif_table
 
 def sample_data(n=80):
@@ -46,17 +48,9 @@ def test_vif_is_finite_and_one_row_per_predictor():
 
 
 def test_chronological_validation_skips_when_dates_are_missing():
-    import importlib.util
-    from pathlib import Path
-
-    path = Path(__file__).parents[1] / "scripts" / "run_analysis.py"
-    spec = importlib.util.spec_from_file_location("run_analysis", path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-
     data = sample_data().drop(columns=["Date_Time"])
     data["Date_Time"] = pd.NaT
-    metrics, predictions, model = module.chronological_validation_or_skip(
+    metrics, predictions, model = chronological_validation_or_skip(
         data, "Traffic_Volume", "Dry", "Broad Street"
     )
     assert metrics["Validation"] == "Chronological"
