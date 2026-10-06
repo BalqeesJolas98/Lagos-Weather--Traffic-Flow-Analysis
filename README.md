@@ -39,6 +39,10 @@ The repository therefore preserves Weather Condition in the standardized data bu
 
 ## Statistical outputs
 
+The pipeline now reproduces the paper's reported descriptive and regression analyses, including traffic composition, the combined rain/no-rain comparison, precipitation boxplots, temperature and dew-point relationship plots, and the season-road OLS model tables.
+
+The repository does **not** invent an infrastructure-durability outcome or a road-capacity model. Although the paper discusses flooding, heat, infrastructure performance and capacity conceptually, the supplied traffic dataset does not contain a direct infrastructure-condition or capacity outcome, so those topics are treated as discussion/limitations rather than fabricated quantitative models.
+
 The pipeline produces:
 
 - R and R-squared
@@ -92,7 +96,7 @@ Generated tables, figures, predictions and equations are written to results/.
 
     pytest -q tests
 
-Tests cover regression construction, model summaries, random holdout reproducibility, date-based chronological validation, VIF construction and source-column standardization.
+Tests cover regression construction, model summaries, random holdout reproducibility, date-based chronological validation, VIF construction, source-column standardization, traffic composition, rain/no-rain comparison and combined weather regression.
 
 ## Reproducibility
 
