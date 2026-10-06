@@ -63,14 +63,20 @@ Additional reproducibility diagnostics are provided for the same model: VIF, AIC
 
 The R-squared values in the fitted regression tables are not the same quantity as an out-of-sample validation R-squared. The repository keeps these analyses in separate output tables so that validation results are not substituted for the paper's fitted model statistics.
 
-## Data
+## Data availability and provenance
 
-Raw Excel workbooks are not committed to this public repository. Place the study workbooks in data/ locally:
+Raw Excel workbooks are not committed to this public repository. The code, tests and processing workflow are public, but the empirical results cannot be reproduced from a clean clone without access to the study workbooks.
+
+Place the study workbooks in data/ locally:
 
 - DRY_SEASON_DATASET.xlsx, or DRY_SEASON_DATASET DEC- JAN.xlsx
 - WET_SEASON_DATASET.xlsx, or WET_SEASON_DATASET APR- MAY.xlsx
 
 The traffic sheets used are Marina Road and Broad Street. The wet-season auxiliary weather-only worksheet is excluded from the traffic regression because it does not contain the traffic variables required by the traffic-flow analysis.
+
+The study uses weather observations obtained from the Nigerian Meteorological Agency (NIMET) and traffic observations obtained through video-based traffic counting. Exact source files, station identifiers, observation timestamps, counting intervals, collection procedures and restricted source material should be retained with the research records so that the provenance of each analysis input can be established. These details are not invented here because they are not encoded in the public repository.
+
+For supervisory or research review, the data-access arrangement should be stated explicitly, including whether the source workbooks can be shared with reviewers or provided privately for verification.
 
 ## Installation
 
@@ -104,9 +110,17 @@ Regression coefficients are not hard-coded as model inputs. Values transcribed f
 
 The paper reports modest explanatory power and interprets the weather-only models primarily in terms of directional effects. The repository follows that interpretation.
 
+## Limitations and future research
+
+The principal methodological limitation is the assumption of constant traffic speed. Because traffic speed, volume and density are interdependent, future work should collect or derive observed speed and examine the three traffic-flow variables jointly.
+
+The weather-only regression should also be interpreted as an association model rather than a complete traffic-prediction model. Future work can incorporate traffic demand, time of day, day of week, road characteristics, incidents and other relevant temporal or spatial factors to determine how much additional explanatory power weather contributes.
+
+The study's empirical reproducibility is also limited by the public unavailability of the raw workbooks. Where permitted, future releases should provide a documented data package or access procedure, together with provenance information for the weather source, traffic-counting protocol, observation period and data-cleaning decisions.
+
 ## Authorship
 
-Repository author/maintainer: **balqeesJolas98**.
+Repository author and maintainer: **Balqees Omobolanle Jolaosho**.
 
 
 ### Validation reproduction and supplementary diagnostics
